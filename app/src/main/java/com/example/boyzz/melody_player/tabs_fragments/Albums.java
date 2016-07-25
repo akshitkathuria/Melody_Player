@@ -18,7 +18,7 @@ import com.example.boyzz.melody_player.R;
  */
 public class Albums extends android.support.v4.app.Fragment implements AdapterView.OnItemClickListener
 {
-    ArrayAdapter<String> adpater;
+     ArrayAdapter<String> adpater;
     View view;
     ListView lv;
 
@@ -26,7 +26,7 @@ public class Albums extends android.support.v4.app.Fragment implements AdapterVi
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         View view = inflater.inflate(R.layout.fragment_albums,container,false);
-        lv = (ListView)view.findViewById(R.id.listview);
+        lv = (ListView)view.findViewById(R.id.albumslistview);
         lv.setOnItemClickListener(this);
 
         adpater = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1,android.R.id.text1, Getter.getAlbumList());

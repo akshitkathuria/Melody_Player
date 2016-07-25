@@ -1,54 +1,56 @@
 package com.example.boyzz.melody_player;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
-import android.database.Cursor;
 import android.media.MediaPlayer;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
+import android.os.Handler;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
+import android.widget.SeekBar;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 
-/**
- * Created by boyzz on 7/17/16.
- */
 public class Player extends Activity
 {
+    Handler handler;
+    SeekBar seekbar;
     String song;
     ArrayList<String> path = null;
     Button start,stop,pause;
     MediaPlayer mp = new MediaPlayer();
 
-    @Override
     public void onCreate(Bundle savedInstanceState)
     {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.player);
 
         start = (Button)findViewById(R.id.start);
-        pause = (Button)findViewById(R.id.pause);
         stop = (Button)findViewById(R.id.stop);
+        pause = (Button)findViewById(R.id.pause);
 
         Bundle bundle = getIntent().getExtras();
 
         String position = bundle.getString("ids");
-        path =bundle.getStringArrayList("values");
+        path = bundle.getStringArrayList("values");
 
-        System.out.print(path);
         song = path.get(Integer.parseInt(position));
-        Toast.makeText(getApplicationContext(),song,Toast.LENGTH_SHORT).show();
 
         try
         {
+            mp.reset();
             mp.setDataSource(song);
             mp.prepare();
+
+            int mediamax = mp.getDuration();
+            int mediapos = mp.getCurrentPosition();
+
+            seekbar.setMax(mediamax);
+            seekbar.setProgress(mediapos);
+
+            handler.removeCallbacks(moveSeekBarThread);
+            handler.postDelayed(moveSeekBarThread,100);
+
+
         }
         catch (Exception e)
         {
@@ -56,9 +58,25 @@ public class Player extends Activity
         }
     }
 
+    private Runnable moveSeekBarThread = new Runnable()
+    {
+        @Override
+        public void run()
+        {
+            if(mp.isPlaying())
+            {
+                int mediaPos_new = mp.getCurrentPosition();
+                int mediaMax_new = mp.getDuration();
+                seekbar.setMax(mediaMax_new);
+                seekbar.setProgress(mediaPos_new);
+
+                handler.postDelayed(this, 100);
+            }
+        }
+    };
+
     public void start(View view)
     {
-
         mp.start();
     }
     public void pause(View view)
@@ -67,6 +85,6 @@ public class Player extends Activity
     }
     public void stop(View view)
     {
-        mp.release();
+        mp.stop();
     }
 }

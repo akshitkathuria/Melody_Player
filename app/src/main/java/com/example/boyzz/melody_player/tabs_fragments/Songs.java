@@ -28,12 +28,12 @@ public class Songs extends android.support.v4.app.Fragment implements AdapterVie
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
     {
         view = inflater.inflate(R.layout.fragment_songs, container, false);
-        lv = (ListView)view.findViewById(R.id.listview);
+        lv = (ListView)view.findViewById(R.id.songslistview);
         lv.setOnItemClickListener(this);
 
         Getter g = new Getter();
-
-        adpater = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1,android.R.id.text1,g.getlist(getContext()));
+        g.getlist(getActivity());
+        adpater = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1,android.R.id.text1,Getter.getSongsList());
         lv.setAdapter(adpater);
 
         return view;
