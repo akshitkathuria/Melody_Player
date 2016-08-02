@@ -40,8 +40,11 @@ public class Getter //extends Activity
                 String artist = cursor.getString(cursor.getColumnIndex(MediaStore.Audio.Media.ARTIST));
                 artistlist.add(new String(artist));
 
+
+
             } while (cursor.moveToNext());
         }
+
         cursor.close();
     }
 

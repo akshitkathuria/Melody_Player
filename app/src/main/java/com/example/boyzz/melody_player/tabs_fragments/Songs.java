@@ -9,7 +9,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
+
 import com.example.boyzz.melody_player.Getter;
+import com.example.boyzz.melody_player.MainActivity;
 import com.example.boyzz.melody_player.Player;
 import com.example.boyzz.melody_player.R;
 
@@ -23,6 +26,7 @@ public class Songs extends android.support.v4.app.Fragment implements AdapterVie
     ArrayAdapter<String> adpater;
     View view;
     ListView lv;
+    String search;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState)
@@ -35,6 +39,9 @@ public class Songs extends android.support.v4.app.Fragment implements AdapterVie
         g.getlist(getActivity());
         adpater = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1,android.R.id.text1,Getter.getSongsList());
         lv.setAdapter(adpater);
+
+        MainActivity activity = (MainActivity) getActivity();
+        String searchtext = activity.searchit();
 
         return view;
     }

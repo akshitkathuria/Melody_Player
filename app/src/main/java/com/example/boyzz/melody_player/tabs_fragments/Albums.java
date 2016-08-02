@@ -1,7 +1,11 @@
 package com.example.boyzz.melody_player.tabs_fragments;
 
 import android.app.Fragment;
+import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
+import android.provider.MediaStore;
+import android.support.design.widget.Snackbar;
 import android.telecom.Call;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,8 +13,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.example.boyzz.melody_player.Getter;
+import com.example.boyzz.melody_player.Player;
 import com.example.boyzz.melody_player.R;
 
 /**
@@ -36,8 +42,8 @@ public class Albums extends android.support.v4.app.Fragment implements AdapterVi
     }
 
     @Override
-    public void onItemClick(AdapterView<?> adapterView, View view, int i, long l)
+    public void onItemClick(AdapterView<?> adapterView, View view, int position, long l)
     {
-
+        Snackbar.make(view, "Coming Soon", Snackbar.LENGTH_LONG).setAction("Action", null).show();
     }
 }

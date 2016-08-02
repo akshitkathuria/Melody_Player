@@ -1,19 +1,22 @@
 package com.example.boyzz.melody_player;
 
 import android.app.Activity;
+import android.content.ContentResolver;
 import android.media.MediaPlayer;
+import android.net.Uri;
 import android.os.Bundle;
-import android.os.Handler;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.SeekBar;
 
 import java.util.ArrayList;
 
-public class Player extends Activity
+public class Player extends Activity implements Runnable
 {
-    Handler handler;
+    static String position;
     SeekBar seekbar;
+    Thread seekthread;
     String song;
     ArrayList<String> path = null;
     Button start,stop,pause;
@@ -27,10 +30,13 @@ public class Player extends Activity
         start = (Button)findViewById(R.id.start);
         stop = (Button)findViewById(R.id.stop);
         pause = (Button)findViewById(R.id.pause);
+        seekbar = (SeekBar)findViewById(R.id.seekbar);
+
+        seekthread = new Thread(this);
 
         Bundle bundle = getIntent().getExtras();
 
-        String position = bundle.getString("ids");
+        position = bundle.getString("ids");
         path = bundle.getStringArrayList("values");
 
         song = path.get(Integer.parseInt(position));
@@ -41,43 +47,47 @@ public class Player extends Activity
             mp.setDataSource(song);
             mp.prepare();
 
-            int mediamax = mp.getDuration();
-            int mediapos = mp.getCurrentPosition();
-
-            seekbar.setMax(mediamax);
-            seekbar.setProgress(mediapos);
-
-            handler.removeCallbacks(moveSeekBarThread);
-            handler.postDelayed(moveSeekBarThread,100);
-
-
         }
         catch (Exception e)
         {
             e.printStackTrace();
         }
+
+        seekbar.setOnSeekBarChangeListener(new SeekBar.OnSeekBarChangeListener()
+        {
+            @Override
+            public void onProgressChanged(SeekBar seekBar, int i, boolean b)
+            {
+                if(b)
+                {
+                    mp.seekTo(i);
+
+                }
+            }
+
+            @Override
+            public void onStartTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+
+            @Override
+            public void onStopTrackingTouch(SeekBar seekBar)
+            {
+
+            }
+        });
     }
 
-    private Runnable moveSeekBarThread = new Runnable()
-    {
-        @Override
-        public void run()
-        {
-            if(mp.isPlaying())
-            {
-                int mediaPos_new = mp.getCurrentPosition();
-                int mediaMax_new = mp.getDuration();
-                seekbar.setMax(mediaMax_new);
-                seekbar.setProgress(mediaPos_new);
-
-                handler.postDelayed(this, 100);
-            }
-        }
-    };
 
     public void start(View view)
     {
+        if(mp.isPlaying())
+        {
+            mp.stop();
+        }
         mp.start();
+        seekthread.start();
     }
     public void pause(View view)
     {
@@ -86,5 +96,32 @@ public class Player extends Activity
     public void stop(View view)
     {
         mp.stop();
+    }
+    public void Delete(View view)
+    {
+
+    }
+
+    @Override
+    public void run()
+    {
+        int currentposition = 0;
+        int duration = mp.getDuration();
+        seekbar.setMax(duration);
+        System.out.println("-------------------"+currentposition);
+
+        while ( mp!=null && currentposition<duration)
+        {
+            try
+            {
+                seekthread.sleep(300);
+                currentposition = mp.getCurrentPosition();
+            }
+            catch (Exception e)
+            {
+
+            }
+            seekbar.setProgress(currentposition);
+        }
     }
 }
