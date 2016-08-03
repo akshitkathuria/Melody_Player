@@ -34,6 +34,8 @@ public class MainActivity extends AppCompatActivity {
     Fragment fragment;
     Toolbar toolbar;
     String searchtext;
+    Songs s;
+    ViewPagerAdapter adapter;
     static final int check = 1111;
 
     @Override
@@ -42,6 +44,8 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+        s = (Songs)adapter.getFragment();
 
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
         fab.setOnClickListener(new View.OnClickListener() {
@@ -62,7 +66,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void setupViewPager(ViewPager viewPager)
     {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
+        adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFragment(new Songs(),"Songs");
         adapter.addFragment(new Albums(),"Albums");
         adapter.addFragment(new Artists(),"Artist");
@@ -85,8 +89,9 @@ public class MainActivity extends AppCompatActivity {
         searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
             @Override
             public boolean onQueryTextSubmit(String query) {
-                searchtext = query;
-                searchit();
+                //searchtext = query;
+                //searchit();
+                s.search(query);
                 return false;
             }
 

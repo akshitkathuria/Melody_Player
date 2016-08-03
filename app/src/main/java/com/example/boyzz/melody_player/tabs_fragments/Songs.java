@@ -3,6 +3,7 @@ package com.example.boyzz.melody_player.tabs_fragments;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v4.app.FragmentManager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -40,8 +41,10 @@ public class Songs extends android.support.v4.app.Fragment implements AdapterVie
         adpater = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1,android.R.id.text1,Getter.getSongsList());
         lv.setAdapter(adpater);
 
-        MainActivity activity = (MainActivity) getActivity();
-        String searchtext = activity.searchit();
+        FragmentManager fm = getFragmentManager();
+
+        //MainActivity activity = (MainActivity) getActivity();
+        //String searchtext = activity.searchit();
 
         return view;
     }
@@ -56,5 +59,10 @@ public class Songs extends android.support.v4.app.Fragment implements AdapterVie
         mbundle.putStringArrayList("values",Getter.getPathList());
         i.putExtras(mbundle);
         startActivity(i);
+    }
+
+    public void search(String query)
+    {
+        adpater.getFilter().filter(query);
     }
 }
