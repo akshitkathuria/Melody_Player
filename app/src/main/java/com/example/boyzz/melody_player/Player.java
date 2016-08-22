@@ -17,8 +17,8 @@ public class Player extends Activity implements Runnable
     static String position;
     SeekBar seekbar;
     Thread seekthread;
-    String song;
-    ArrayList<String> path = null;
+    SongDetail song;
+    ArrayList<SongDetail> path = null;
     Button start,stop,pause;
     MediaPlayer mp = new MediaPlayer();
 
@@ -37,16 +37,15 @@ public class Player extends Activity implements Runnable
         Bundle bundle = getIntent().getExtras();
 
         position = bundle.getString("ids");
-        path = bundle.getStringArrayList("values");
+        path = bundle.getParcelableArrayList("values");
 
         song = path.get(Integer.parseInt(position));
 
         try
         {
             mp.reset();
-            mp.setDataSource(song);
-            mp.prepare();
-
+            mp.setDataSource(song.getPath());
+            mp.prepareAsync();
         }
         catch (Exception e)
         {
@@ -82,10 +81,6 @@ public class Player extends Activity implements Runnable
 
     public void start(View view)
     {
-        if(mp.isPlaying())
-        {
-            mp.stop();
-        }
         mp.start();
         seekthread.start();
     }

@@ -18,13 +18,15 @@ import android.widget.Toast;
 import com.example.boyzz.melody_player.Getter;
 import com.example.boyzz.melody_player.Player;
 import com.example.boyzz.melody_player.R;
+import com.example.boyzz.melody_player.SongDetail;
+import com.example.boyzz.melody_player.adapter;
 
 /**
  * Created by boyzz on 7/11/16.
  */
 public class Albums extends android.support.v4.app.Fragment implements AdapterView.OnItemClickListener
 {
-     ArrayAdapter<String> adpater;
+    adapter adapter;
     View view;
     ListView lv;
 
@@ -35,8 +37,8 @@ public class Albums extends android.support.v4.app.Fragment implements AdapterVi
         lv = (ListView)view.findViewById(R.id.albumslistview);
         lv.setOnItemClickListener(this);
 
-        adpater = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1,android.R.id.text1, Getter.getAlbumList());
-        lv.setAdapter(adpater);
+        adapter = new adapter(getActivity(), Getter.getSongsList());
+        lv.setAdapter(adapter);
 
         return view;
     }

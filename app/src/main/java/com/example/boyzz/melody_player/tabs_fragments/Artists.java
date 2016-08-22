@@ -13,6 +13,7 @@ import android.widget.ListView;
 
 import com.example.boyzz.melody_player.Getter;
 import com.example.boyzz.melody_player.R;
+import com.example.boyzz.melody_player.adapter;
 
 /**
  * Created by boyzz on 7/11/16.
@@ -20,7 +21,7 @@ import com.example.boyzz.melody_player.R;
 public class Artists extends android.support.v4.app.Fragment implements AdapterView.OnItemClickListener
 {
     ListView lv;
-    ArrayAdapter<String> adapter;
+    adapter adapter;
     View view;
     @Nullable
     @Override
@@ -28,7 +29,7 @@ public class Artists extends android.support.v4.app.Fragment implements AdapterV
     {
         view = inflater.inflate(R.layout.fragment_artists,container,false);
 
-        adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_expandable_list_item_1,android.R.id.text1, Getter.getArtistList());
+        adapter = new adapter(getActivity(), Getter.getSongsList());
         lv = (ListView)view.findViewById(R.id.artistslistview);
         lv.setAdapter(adapter);
 
